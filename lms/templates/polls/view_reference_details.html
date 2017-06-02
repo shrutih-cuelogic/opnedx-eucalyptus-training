@@ -1,0 +1,44 @@
+<%page expression_filter="h"/>
+<%inherit file="../main.html" />
+<%def name="online_help_token()"><% return "learnerdashboard" %></%def>
+<%namespace name='static' file='../static_content.html'/>
+<%!
+from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext as _
+from django.template import RequestContext
+from openedx.core.djangolib.js_utils import dump_js_escaped_json, js_escaped_string
+from openedx.core.djangolib.markup import HTML, Text
+%>
+
+
+<%block name="pagetitle">${_("Polls")}</%block>
+<%block name="bodyclass">view-polls is-authenticated</%block>
+
+<div class="btnWrap">
+	<a class="btn btn-primary" href="/polls/">Create reference</a>
+</div>
+<main id="main" aria-label="Content" tabindex="-1">
+    % if reference_details :
+    	<div class="container">
+    	<div class="row referenceListWrap">
+    	% for ref in reference_details:
+    		<div class="col-sm-6">
+				<div class="well">
+					<div class="contrCaption">
+					    <h2>${ref.reference_name}</h2>
+					    <h4>Reference Type: ${ref.reference_type}</h4>
+					    <h4>Reference Link: ${ref.reference_link}</h4>
+					    <p>Reference Description: ${ref.reference_description}</p>
+					    <h4>${ref.reference_status}</h4>
+					</div>
+					<div class="btnWrap">
+						<a class="btn btn-primary" href="/polls/edit/${ref.id}">Edit reference</a>
+						<a class="btn btn-danger" href="/polls/delete/${ref.id}">Delete reference</a>
+					</div>
+				</div>
+			</div>
+    	% endfor
+    	</div>
+    	</div>
+    % endif
+</main>
